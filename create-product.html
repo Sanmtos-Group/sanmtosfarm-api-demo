@@ -244,6 +244,8 @@
 			})
 			.catch((error) => {
 				toastr.error(error);
+				$('#preLoader').hide();
+				$('#main').show()
 				$('#errors').append('<p>'+ error +' <br/></p>');
 			})
 			.then(()=>{
