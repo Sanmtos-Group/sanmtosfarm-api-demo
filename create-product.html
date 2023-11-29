@@ -242,16 +242,13 @@
 					})
 				}
 			})
-			.then(() => {
-				$('#preLoader').hide();
-				$('#main').show();
-			})
 			.catch((error) => {
-				$('#preLoader').hide();
-				$('#main').show();
-
 				toastr.error(error);
 				$('#errors').append('<p>'+ error +' <br/></p>');
+			})
+			.then(()=>{
+				$('#preLoader').hide();
+				$('#main').show()
 			});
 		});
 	});
