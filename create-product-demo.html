@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script  src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />	<title>Laravel Ajax Multiple File upload</title>
+</head>
+<body class="bg-slate-300">
+	<!-- Preloader -->
+	<div class="h-screen flex justify-center items-center bg-gray-200 gap-6" id="preLoader" >	  
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 animate-spin text-blue-500">
+			<path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+		</svg>
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 animate-spin text-red-500">
+			<path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+		</svg>
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 animate-spin text-green-500">
+			<path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+		</svg>
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 animate-spin text-yellow-500">
+			<path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+		</svg>
+	</div>
+	<!-- End of preloader -->
+	  
+  	<main class="py-20 px-10" id="main" >
+		<div class="md:grid md:grid-cols-6 gap-2">
+			
+			<div class="shadow p-4 bg-white md:col-start-2 md:col-span-4 ">
+				<div class="mb-6 bg-slate-800 text-white p-4"> 
+					<h3 class="mb-2">Santoms Product form - multiple image upload demo</h3>
+					<div class="flex">
+						<label for="checked-toggle" class="inline-flex relative items-start mb-4 cursor-pointer">
+							<input type="checkbox" value="https://sanmtosfarm.com/public/api" id="checked-toggle" class="sr-only peer" checked>
+							<div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+						</label>
+						<span class="ml-3  text-bold font-thin text-white" >Base url: <span id="base_url">https://sanmtosfarm.com/public/api </span></span>
+					</div>
+					
+				</div>
+                <div class="border p-2 mb-2 ">
+                    <div class="">
+                        <label for="auth_token" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Authorization Token</label>
+                        <input type="auth_token" id="auth_token" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="input your api bearer auth token" required>
+                    </div>
+                </div>
+				<div id="errors" class="p-4 rounded bg-red-50 text-red-500 mb-4">
+				
+				</div>
+				<div id="success" class="p-4 rounded bg-green-50 text-green-700 mb-4">
+					
+				</div>
+				
+				<form id="productForm" enctype="multipart/form-data">
+					<div class="relative z-0 mb-6 w-full group">
+                        <input type="text" name="name" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required="">
+						<label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Name</label>
+					</div>
+                    <div class="relative z-0 mb-6 w-full group">
+						<label for="images" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="file_input">Upload Product Images</label>
+						<input name="images[]" id="images" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="images" type="file"  accept="image/*" multiple>
+						<p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x 400px).</p>
+					</div>
+                    <div class="grid md:grid-cols-2 md:gap-6">
+						<div class="relative z-0 mb-6 w-full group">
+							<input type="number" min="0.01" step="0.01" name="price" id="price" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required="">
+							<label for="price" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Price</label>
+						</div>
+						<div class="relative z-0 mb-6 w-full group">
+							<input type="text" name="currency" id="currency" value="NGN" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required="">
+							<label for="currency" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Currency</label>
+						</div>
+					</div>
+                    <div class="grid md:grid-cols-2 md:gap-6">
+						<div class="relative z-0 mb-6 w-full group">
+                            <select id="stores" name="store_id" class="block py-2.5 px-1 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                                <option selected >Select store</option>
+                            </select>
+                            <label for="stores" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"> Store Id </label>
+						</div>
+						<div class="relative z-0 mb-6 w-full group">
+							<select id="categories" name="category_id" class="block py-2.5 px-1 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+								<option selected class="">Select category</option>
+							</select>
+							<label for="categories" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"> Category </label>
+						</div>
+					</div>
+										
+					<div class="py-2 bg-white bor rounded-t-lg dark:bg-gray-800">
+						<label for="description" class="text-sm text-gray-500 bg-transparen">Description</label>
+						<textarea id="description" name="description" rows="4" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600" required></textarea>
+					</div>
+                    <div class="relative z-0 mb-6 w-full group">
+						<input type="text" name="short_description" id="short_description" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required="">
+						<label for="short_description" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Short Description</label>
+					</div>
+					
+					
+					<button id="clear-button" type="reset" class=" m-2 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Clear</button>
+					<button type="submit" class="m-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+				</form>
+			</div>
+			
+		</div>
+	</main>
+  
+  
+  <script>
+	$(document).ready(function () {
+		$('#preLoader').hide();
+		$('#errors').hide('')	;
+		$('#success').hide('')	;
+		var local_url = 'http://127.0.0.1:8000/api';
+		var base_url = $('#checked-toggle').val();
+
+        var headers = new Headers();
+        headers.append("Accept", "application/json");
+
+		updateStoreSelectionOption();
+        updateCategorySelectionOption();
+
+		$('#checked-toggle').change(function(event){
+			if(this.checked)
+				base_url = $('#checked-toggle').val();
+			else
+				base_url = local_url;
+            $('#base_url').html(base_url);
+            toastr.success('Base url: <small>'+base_url+'<small>');	
+            updateStoreSelectionOption();
+			updateCategorySelectionOption();
+
+		})
+        function updateStoreSelectionOption(){
+			$.get(base_url+'/stores')
+			.done((response)=>{
+                $('#stores').html("<option selected>Select store</option>");
+				response.data.forEach(store => {
+					$('#stores').append('<option value='+store.id+' >'+ store.name +'</option>');
+				});
+			})
+			.fail((response)=> {
+				toastr.warning(response.statusText +': could not fetch stores, please check browser console for reason');
+			});
+		}
+
+		function updateCategorySelectionOption(){
+			$.get(base_url+'/categories')
+			.done((response)=>{
+                $('#categories').html("<option selected>Select category</option>");
+				response.data.forEach(category => {
+					$('#categories').append('<option value='+category.id+' >'+ category.name +'</option>');
+				});
+			})
+			.fail((response)=> {
+				toastr.warning(response.statusText +': could not fetch categories, please check browser console for reason');
+			});
+		}
+		
+		// Tastr seetings 
+		toastr.options.closeMethod = 'fadeOut';
+		toastr.options.closeDuration = 5000;
+		toastr.options.extendedTimeOut = 5000; // How long the toast will display after a user hovers over it
+		toastr.options.closeEasing = 'swing';
+		toastr.options.closeButton = true;
+		toastr.options.progressBar = true;
+		
+		$('#productForm').submit(function (event){
+			event.preventDefault();
+
+			$('#preLoader').show();
+			$('#main').hide();
+			$('#errors').html('')	;
+			$('#success').html('')	;
+			$('#errors').hide('')	;
+			$('#success').hide('')	;
+
+			var files = $("#images").get(0).files;
+			var form_data = new FormData(this);
+
+			// attach the images as array to the form data 
+            for (var i = 0; i < files.length; i++) {
+                form_data.append('images[]',files[i]);
+            }
+
+            // add the bearer auth token in the header 
+            headers.append("Authorization", "Bearer "+$('#auth_token').val());
+
+			/**c
+			 * using fetch api for the ajax request.
+			 * @documentation link  https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+			*/
+			fetch(base_url+'/products', {
+				method: "POST", 
+                headers: headers,
+				body: form_data,
+			})
+			// Get the browser response 
+			.then((response) => {
+				if(!response.ok){
+					// alert the browser response error
+					toastr.error(response.statusText);
+
+					// Get the server response
+					response.json().then((promise) => {
+						toastr.error(promise.message);
+						/* this is an example for new snippet extension make by me xD */
+						if(promise.errors)
+						$('#errors').show('')	;
+						for(const error of Object.entries(promise.errors))	
+							$('#errors').append('<p>'+error+'</p>')	;		
+					})
+				}else {
+					/**
+					 * Get the server reponse 
+					 * 
+					 * For sa, the response follows this format  below
+					 * 
+					 *  {
+					 * 	  status: "OK",
+					 * 	  message: "message",
+					 * 	  data : data, 
+					 *    errors: ['error 1', 'error 2']
+					 *  }
+			 		*/  
+					response.json().then((promise) => {
+						if(promise.status=200){
+							toastr.success(promise.message);
+							$('#success').show('');
+							$('#success').append('<p>Product created successfull! <a href='+base_url+'/products/'+promise.data.id+' class="underline mx-2 pointer-mouse text-blue-600"> view </a></p>')	;
+							$('#clear-button').click;
+						}else{
+							toastr.error(promise.message);
+							if(promise.errrors)
+							$('#errors').show('');
+							/* this is an example for new snippet extension make by me xD */
+							for(const error of Object.entries(promise.errors))	
+								$('#errors').append('<p>'+error+'</p>')	;	
+						}	
+					})
+				}
+			})
+			.then(() => {
+				$('#preLoader').hide();
+				$('#main').show();
+			})
+			.catch((error) => {
+				$('#preLoader').hide();
+				$('#main').show();
+
+				toastr.error(error);
+				$('#errors').append('<p>'+ error +' <br/></p>');
+			});
+		});
+	});
+  </script>
+</body>
+</html>
