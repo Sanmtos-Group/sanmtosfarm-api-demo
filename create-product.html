@@ -177,10 +177,10 @@
 			$('#errors').hide('')	;
 			$('#success').hide('')	;
 
-			var files = $("#images").get(0).files;
 			var form_data = new FormData(this);
 
 			// attach the images as array to the form data 
+			var files = $("#images").get(0).files;
             for (var i = 0; i < files.length; i++) {
                 form_data.append('images[]',files[i]);
             }
